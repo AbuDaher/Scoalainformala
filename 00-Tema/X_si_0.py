@@ -1,3 +1,4 @@
+
 import random
 
 intrebare = input('Vrei sa incepi tu jocul? "y/n" ')

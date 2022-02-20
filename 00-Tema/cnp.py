@@ -1,3 +1,4 @@
+
 input_user = input("Enter CNP: ")
 
 
