@@ -3,7 +3,8 @@
 # 7 sanse de a ghici cuvantul ,
 
 # word = o_o___o_ee
-word = "onomataopee"
+word = "Feromicroazotombohidric" \
+
 
 lista_cuvant = []
 for iterator in word:
