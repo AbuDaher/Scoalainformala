@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +14,7 @@
 
     <title>{% block title %}My site{% endblock %}</title>
 </head>
-<body>
+<body id="bg" style="background-image: url('{%static 'img/Wallpaper2.jpg'%}');">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <div>
@@ -20,29 +22,66 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/home">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/create_post">Post</a>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Actuals reporting
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="actuals">View Materials</a></li>
+                        <li><a class="dropdown-item" href="/create_post_actuals">Post New Material</a></li>
+                        <li><a class="dropdown-item" href="#">Delete Obsolete Material</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
-        <div>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown0">
             <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink0" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Planning reporting
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="/planning">View Materials</a></li>
+                        <li><a class="dropdown-item" href="/create_post_planning">Post New Material</a></li>
+                        <li><a class="dropdown-item" href="#">Delete Obsolete Material</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown1">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink1" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Useful Templates
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Download Templates</a></li>
+                        <li><a class="dropdown-item" href="/create_post">Post New Templates</a></li>
+                        <li><a class="dropdown-item" href="#">Delete Obsolete Templates</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav">
             {% if user.is_authenticated %}
             <span class="navbar-text bg-blue">Logged in as {{user.username}} | </span>
             <li class="nav-item">
-              <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="/logout">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/login">Login</a>
             </li>
             {% endif %}
-            </ul>
-
-        </div>
-
+        </ul>
     </div>
-
 </nav>
 <div class="container">{% block content %} {% endblock %}
 </div>
@@ -51,6 +90,5 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"
 ></script>
-
 </body>
 </html>
