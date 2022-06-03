@@ -1,0 +1,23 @@
+{% extends 'aplicatie1/base.html' %}
+
+{% block content%}
+    <h2>Books</h2>
+    <table class = "table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{book.title}}</td>
+                <td>{{book.category}}</td>
+                <td>{{book.pdf}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

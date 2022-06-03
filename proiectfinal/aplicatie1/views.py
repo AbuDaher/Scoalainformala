@@ -1,9 +1,15 @@
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
+from django.views.generic import TemplateView
+
 from .forms import RegisterForm, PostForm
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth import login,logout, authenticate
+from django.contrib.auth import login
 from .models import Post
 from django.contrib.auth.models import User, Group
+from django.http import HttpResponseRedirect
+from .forms import BookForm
+from .models import Book
 
 
 @login_required(login_url='/login')
@@ -123,7 +129,6 @@ def create_post_planning(request):
     return render(request, 'aplicatie1/create_post_planning.html', {"form": form})
 
 
-
 def sign_up(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -134,3 +139,32 @@ def sign_up(request):
     else:
         form = RegisterForm()
     return render(request,'registration/sign_up.html', {"form": form})
+
+
+def upload(request):
+    context = {}
+    if request.method == "POST":
+        uploaded_file = request.FILES['document']
+
+        fs = FileSystemStorage()
+        name = fs.save(uploaded_file.name, uploaded_file)
+        context['url'] = fs.url(name)
+    return render(request, 'aplicatie1/upload.html', context)
+
+
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'aplicatie1/book_list.html', {'books':books})
+
+
+def upload_book(request):
+    request.method == "POST"
+    form = BookForm(request.POST, request.FILES)
+        # if form.is_valid():
+        #     form = form.save(commit=False)
+        #
+        #     form.save()
+        #     return redirect('book_list')
+        # else:
+        #     form = BookForm()
+    return render(request, 'aplicatie1/upload_book.html', {"form": form })
