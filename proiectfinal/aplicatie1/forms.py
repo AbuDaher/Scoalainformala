@@ -23,4 +23,4 @@ class PostForm(forms.ModelForm):
 class BookForm(forms.ModelForm):
    class Meta:
        model = Book
-       fields = ['title','category','pdf']
+       fields = ['title','category','pdf', 'cover']

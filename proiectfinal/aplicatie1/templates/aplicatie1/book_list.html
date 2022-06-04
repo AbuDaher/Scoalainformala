@@ -5,19 +5,62 @@
     <table class = "table">
         <thead>
             <tr>
+                <th>Cover</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Download</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-        {% for book in books %}
+        {% for book in bookview %}
             <tr>
+                <td>
+                    {% if book.cover %}
+                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" style="width:110px;">
+                    {% else %}
+                    <span class="text-muted">No cover</span>
+                    {% endif %}
+                </td>
                 <td>{{book.title}}</td>
                 <td>{{book.category}}</td>
-                <td>{{book.pdf}</td>
+                <td>
+                     <a href="{{ book.pdf.url }}" class="btn btn-primary btn-sm">
+                         Open document
+                     </a>
+                </td>
+                <td>
+                    <form method="post" action = "{% url 'delete_book' book.pk %}">
+                        {% csrf_token%}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete document</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <br/><br/>
+    <!--
+    {{ bookview}}<br/>
+    Has Previous: {{ bookview.has_previous }}<br/>
+    Has Next: {{ bookview.has_next }} <br/>
+    Current Page: {{ bookview.number }} <br/>
+    Number of Pages: {{ bookview.paginator.num_pages }} <br/>
+    <hr><br/><br/>
+    -->
+
+    {% if  bookview.has_previous %}
+        <a href="?page=1">&laquo First</a>
+        <a href="?page={{ bookview.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    Page {{ bookview.number }} of {{ bookview.paginator.num_pages }}
+
+    {% if bookview.has_next %}
+        <a href="?page={{ bookview.next_page_number }}">Next</a>
+        <a href="?page={{ bookview.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
+
+
+
 {% endblock %}

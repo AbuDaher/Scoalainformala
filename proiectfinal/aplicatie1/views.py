@@ -1,6 +1,7 @@
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.core.paginator import Paginator
 
 from .forms import RegisterForm, PostForm
 from django.contrib.auth.decorators import login_required, permission_required
@@ -101,7 +102,6 @@ def planning(request):
 @login_required(login_url="/login")
 @permission_required("aplicatie1.add_post", login_url="/login", raise_exception=True)
 
-
 def create_post_actuals(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -154,17 +154,26 @@ def upload(request):
 
 def book_list(request):
     books = Book.objects.all()
-    return render(request, 'aplicatie1/book_list.html', {'books':books})
+    p = Paginator(Book.objects.all(), 2)
+    page = request.GET.get('page')
+    bookview = p.get_page(page)
+    return render(request, 'aplicatie1/book_list.html', {'books':books, 'bookview': bookview })
 
 
 def upload_book(request):
-    request.method == "POST"
-    form = BookForm(request.POST, request.FILES)
-        # if form.is_valid():
-        #     form = form.save(commit=False)
-        #
-        #     form.save()
-        #     return redirect('book_list')
-        # else:
-        #     form = BookForm()
-    return render(request, 'aplicatie1/upload_book.html', {"form": form })
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('book_list')
+    else:
+        form = BookForm()
+    return render(request, 'aplicatie1/upload_book.html', {
+        'form': form
+    })
+
+def delete_book(request, pk):
+    if request.method == "POST":
+        book = Book.objects.get(pk=pk)
+        book.delete()
+    return redirect('book_list')
