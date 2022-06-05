@@ -1,0 +1,20 @@
+{% extends 'aplicatie1/base.html' %}
+
+{% block content %}
+    <center>
+    {% if searched %}
+        <h1>You Searched for {{ searched }} </h1>
+        <br/>
+
+        {% for book in books %}
+            <a href ="{{ book.pdf.url }}">{{ book }}</a><br/>
+        {% endfor %}
+    {% else %}
+        <h1>Hei? You forgot to search for a document </h1>
+    {% endif %}
+
+
+
+
+    </center>
+{% endblock %}
