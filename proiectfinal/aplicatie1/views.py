@@ -70,7 +70,7 @@ def actuals(request):
 
     return render(request, 'aplicatie1/actuals.html', {"posts1" : posts1})
 
-
+@login_required(login_url='/login')
 def planning(request):
     posts2 = Post.objects.all()
 
@@ -101,7 +101,6 @@ def planning(request):
 
 @login_required(login_url="/login")
 @permission_required("aplicatie1.add_post", login_url="/login", raise_exception=True)
-
 def create_post_actuals(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -115,6 +114,9 @@ def create_post_actuals(request):
 
     return render(request, 'aplicatie1/create_post_actuals.html', {"form": form})
 
+
+@login_required(login_url="/login")
+@permission_required("aplicatie1.add_post", login_url="/login", raise_exception=True)
 def create_post_planning(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -140,7 +142,8 @@ def sign_up(request):
         form = RegisterForm()
     return render(request,'registration/sign_up.html', {"form": form})
 
-
+@login_required(login_url="/login")
+@permission_required("aplicatie1.add_post", login_url="/login", raise_exception=True)
 def upload(request):
     context = {}
     if request.method == "POST":
@@ -151,15 +154,16 @@ def upload(request):
         context['url'] = fs.url(name)
     return render(request, 'aplicatie1/upload.html', context)
 
-
+@login_required(login_url="/login")
 def book_list(request):
     books = Book.objects.all()
-    p = Paginator(Book.objects.all(), 2)
+    p = Paginator(Book.objects.all(), 4)
     page = request.GET.get('page')
     bookview = p.get_page(page)
     return render(request, 'aplicatie1/book_list.html', {'books':books, 'bookview': bookview })
 
-
+@login_required(login_url="/login")
+@permission_required("aplicatie1.add_post", login_url="/login", raise_exception=True)
 def upload_book(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
@@ -172,8 +176,20 @@ def upload_book(request):
         'form': form
     })
 
+
+@login_required(login_url="/login")
+@permission_required("aplicatie1.add_post", login_url="/login", raise_exception=True)
 def delete_book(request, pk):
     if request.method == "POST":
         book = Book.objects.get(pk=pk)
         book.delete()
     return redirect('book_list')
+
+
+def search_books(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        books = Book.objects.filter(title__contains=searched)
+        return render(request, 'aplicatie1/search_books.html', {'searched':searched, 'books':books})
+    else:
+        return render(request, 'aplicatie1/search_books.html',{})
